@@ -57,6 +57,34 @@
   .amitem:hover{background:#f2f4f7;color:var(--ink)}
   .amitem.on{background:var(--brand-soft);color:var(--brand)}
   .cp-sec{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--brand);margin:4px 0 14px}
+  .i{display:inline-flex;align-items:center;justify-content:center;line-height:0}
+  .i svg{stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+  .cpcard{border:1.5px solid var(--line);border-radius:12px;padding:16px;background:#fff;cursor:pointer;display:flex;gap:13px;align-items:flex-start;transition:all .12s}
+  .cpcard:hover{border-color:var(--brand);background:var(--brand-soft)}
+  .cpcard .cpi{width:44px;height:44px;border-radius:10px;background:var(--brand-soft);color:var(--brand);display:flex;align-items:center;justify-content:center;flex:none}
+  .cpcard h4{font-size:15px}.cpcard p{font-size:12.5px;color:var(--muted)}
+  .optmulti{display:flex;align-items:center;gap:12px;border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14.5px;background:#fff;text-align:left;transition:all .12s;width:100%;margin-bottom:8px}
+  .optmulti:hover{border-color:var(--brand)}
+  .optmulti.sel{border-color:var(--brand);background:var(--brand-soft);font-weight:600}
+  .optmulti .bx{width:20px;height:20px;border-radius:5px;border:2px solid var(--line);flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px}
+  .optmulti.sel .bx{background:var(--brand);border-color:var(--brand)}
+  .hint2{font-size:12.5px;color:var(--muted);margin-bottom:10px}
+  .trust{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:16px;box-shadow:var(--shadow)}
+  .trust .th{background:linear-gradient(135deg,#0f2540,#1f4fb0);color:#fff;padding:14px 18px;display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px}
+  .trust .tb{padding:16px 18px}
+  .trust .tlbl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin:16px 0 8px;display:flex;align-items:center;gap:7px}
+  .tstep{display:flex;gap:10px;align-items:flex-start;font-size:14px;padding:4px 0}
+  .tstep .tn{width:22px;height:22px;border-radius:50%;background:var(--brand-soft);color:var(--brand);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none}
+  .srcbadge{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;padding:7px 12px;border-radius:8px;margin:0 8px 8px 0}
+  .srcbadge.official{background:var(--green-soft);color:var(--green)}
+  .srcbadge.your{background:var(--brand-soft);color:var(--brand)}
+  .conf{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;font-size:14px;font-weight:600}
+  .conf.solid{background:var(--green-soft);color:var(--green)}.conf.check{background:var(--amber-soft);color:var(--amber)}
+  .showwork{margin-top:14px}
+  .showwork summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--brand);list-style:none;display:flex;align-items:center;gap:6px}
+  .showwork summary::-webkit-details-marker{display:none}
+  .maprow{display:flex;justify-content:space-between;font-size:13px;padding:8px 0;border-bottom:1px solid #f1f3f5}
+  .maprow .mc{color:var(--muted);font-weight:600}
   .top-right{display:flex;align-items:center;gap:14px}
   .avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#7c5cff,#1f6feb);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;cursor:pointer}
   .usermenu{position:relative}
@@ -820,63 +848,182 @@ function setTab(t){
 }
 
 /* ---------- Create-a-policy (tailored to how you work) ---------- */
+const ICONS={
+ key:'<circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/>',
+ shield:'<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+ database:'<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/>',
+ siren:'<path d="M7 18v-6a5 5 0 0 1 10 0v6"/><path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1z"/><path d="M21 12h1M2 12h1M12 2v1M18.5 5.5l.7-.7M4.8 4.8l.7.7"/>',
+ wrench:'<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+ bot:'<path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2M20 14h2M15 13v2M9 13v2"/>',
+ fileText:'<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8M16 17H8M10 9H8"/>',
+ landmark:'<path d="M3 22h18"/><path d="M6 18v-7M10 18v-7M14 18v-7M18 18v-7"/><path d="M12 2 3 7h18z"/>',
+ listChecks:'<path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8M13 12h8M13 18h8"/>',
+ checkCircle:'<path d="M21.8 10A10 10 0 1 1 17 3.3"/><path d="m9 11 3 3L22 4"/>',
+ alert:'<path d="m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3z"/><path d="M12 9v4M12 17h.01"/>',
+ edit:'<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+ refresh:'<path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/>',
+ sparkles:'<path d="m12 3 1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3z"/>',
+ arrowLeft:'<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>'
+};
+function icon(n,sz){ return '<span class="i" style="width:'+(sz||18)+'px;height:'+(sz||18)+'px"><svg viewBox="0 0 24 24" width="'+(sz||18)+'" height="'+(sz||18)+'">'+(ICONS[n]||'')+'</svg></span>'; }
+
 const CPOLICIES=[
- {id:'access',name:'Access Control Policy',ctrl:'SOC 2 · CC6 (Access controls)',icon:'🔑',
-  qs:[{q:'How do employees log in to your systems?',o:['Single sign-on (SSO)','Individual accounts + passwords','Some shared accounts']},
-      {q:'Do you require multi-factor authentication (MFA)?',o:['Yes, everyone','Yes, admins only','Not yet']},
-      {q:'How often do you review who has access?',o:['Quarterly','Annually','We don’t yet']}]},
- {id:'infosec',name:'Information Security Policy',ctrl:'SOC 2 · CC1 & CC5',icon:'🛡️',
-  qs:[{q:'Who owns security decisions?',o:['A dedicated security lead','Founder / CTO','No clear owner yet']},
-      {q:'Do staff get security training?',o:['At onboarding + yearly','Occasionally','Not yet']}]},
- {id:'retention',name:'Data Retention Policy',ctrl:'SOC 2 · C1.2 / Privacy',icon:'🗄️',
-  qs:[{q:'How long do you keep customer data?',o:['Only while they’re a customer','A fixed number of years','We keep everything']},
-      {q:'How do you delete data when done?',o:['Automated deletion','Manual deletion','No process yet']}]},
- {id:'incident',name:'Incident Response Policy',ctrl:'SOC 2 · CC7 (System operations)',icon:'🚨',
-  qs:[{q:'Who responds when something breaks?',o:['An on-call rotation','Whoever is available','Undefined']},
-      {q:'Do you notify customers of incidents?',o:['Yes, within a set time','Case by case','No policy yet']}]},
- {id:'aiuse',name:'Acceptable AI Use Policy',ctrl:'NIST AI RMF',icon:'🤖',
-  qs:[{q:'Can staff put customer data into public AI tools?',o:['Never','Only approved tools','No rule yet']},
-      {q:'Is AI output reviewed by a human before customers see it?',o:['Always','Sometimes','No']}]},
- {id:'change',name:'Change Management Policy',ctrl:'SOC 2 · CC8 (Change management)',icon:'🔧',
-  qs:[{q:'How are code changes approved?',o:['Pull-request review','Straight to production','No formal process']},
-      {q:'Do you test changes before release?',o:['Automated tests + staging','Manual testing','Not consistently']}]},
+ {id:'access',name:'Access Control Policy',icon:'key',controlLabel:'SOC 2 · CC6 (Logical & Physical Access)',
+  purpose:'This policy defines how Northwind AI grants, manages, reviews, and removes access to its systems and data, so that only authorized people can reach company and customer information — and only what their job needs. It supports SOC 2 CC6.',
+  scope:'can access Northwind AI systems, applications, or data',
+  evidence:'the SSO and MFA configuration, access-review records, access-request approvals, and the offboarding checklist log.',
+  maps:[['Identity & authentication','CC6.1'],['Least privilege & provisioning','CC6.2 / CC6.3'],['Access reviews','CC6.2'],['Deprovisioning','CC6.3'],['Encryption','CC6.7']],
+  qs:[{q:'How do people log in to your systems?',multi:true,o:['Single sign-on (SSO)','Individual username + password','Some shared accounts']},
+      {q:'Where do you require multi-factor authentication (MFA)?',multi:false,o:['Everyone','Admins only','Not yet']},
+      {q:'How often do you review who has access?',multi:false,o:['Quarterly','Annually','Not yet']}],
+  statements:function(A,has){return [
+    {h:'Identity and authentication',t:'Users authenticate using: '+A(0)+'. Every user is issued a unique individual account; '+(has(0,'Some shared accounts')?'any remaining shared accounts are being phased out and tightly restricted in the meantime.':'shared or generic accounts are prohibited.')},
+    {h:'Multi-factor authentication',t:(has(1,'Everyone')?'MFA is required for all users on every system that supports it.':has(1,'Admins only')?'MFA is required for administrators today, and is being extended to all users.':'MFA is not yet enforced; rolling out MFA for all users is a priority action under this policy.')},
+    {h:'Least privilege',t:'Access is granted on a least-privilege basis — users receive only what their role requires. Elevated privileges are limited to named individuals with a documented business need.'},
+    {h:'Access reviews',t:(has(2,'Quarterly')?'Access is formally reviewed every quarter.':has(2,'Annually')?'Access is formally reviewed at least annually, and we are moving toward quarterly reviews.':'Regular access reviews are being established, with a target cadence of quarterly.')+' Reviews are documented and retained as evidence.'},
+    {h:'Deprovisioning',t:'When someone leaves or changes role, their access is removed promptly — target within one business day — tracked by an offboarding checklist.'},
+    {h:'Encryption',t:'Data is encrypted in transit (TLS 1.2+) and at rest (AES-256); access to encryption keys is itself restricted and logged.'}
+  ];}},
+ {id:'infosec',name:'Information Security Policy',icon:'shield',controlLabel:'SOC 2 · CC1 & CC5',
+  purpose:'This policy sets Northwind AI’s overall approach to protecting information — leadership’s commitment, the controls we run, and everyone’s responsibility. It supports SOC 2 CC1 and CC5.',
+  scope:'handle Northwind AI information or systems',
+  evidence:'the named security owner, the security policy set, and training completion records.',
+  maps:[['Security ownership & governance','CC1'],['Security awareness','CC2'],['Control activities','CC5'],['Segregation of duties','CC5.3']],
+  qs:[{q:'Who owns security decisions?',multi:false,o:['A dedicated security lead','Founder / CTO','No clear owner yet']},
+      {q:'Does staff get security training?',multi:false,o:['At onboarding and yearly','Occasionally','Not yet']}],
+  statements:function(A,has){return [
+    {h:'Security ownership',t:(has(0,'A dedicated security lead')?'A dedicated security lead owns security decisions and this policy.':has(0,'Founder / CTO')?'The Founder/CTO owns security decisions and this policy today; a dedicated lead will be appointed as we grow.':'A named security owner is being assigned; until then the Head of Operations holds this responsibility.')},
+    {h:'Security awareness & training',t:(has(1,'At onboarding and yearly')?'All staff complete security training at onboarding and at least annually.':has(1,'Occasionally')?'Staff receive occasional training today; we are moving to onboarding-plus-annual training.':'A security training program is being put in place, covering onboarding and annual refreshers.')},
+    {h:'Control activities',t:'We implement preventive and detective controls that address our assessed risks, enforced through technology wherever possible.'},
+    {h:'Segregation of duties',t:'Conflicting duties are separated so that no single person can both perform and conceal a sensitive action.'}
+  ];}},
+ {id:'retention',name:'Data Retention Policy',icon:'database',controlLabel:'SOC 2 · C1.2 / Privacy',
+  purpose:'This policy defines how long Northwind AI keeps personal and customer data and how it is disposed of, so we hold data only as long as we need it. It supports SOC 2 C1.2 and privacy obligations.',
+  scope:'collect, store, or process customer or personal data',
+  evidence:'the retention schedule and secure-deletion logs.',
+  maps:[['Retention periods','C1.2'],['Secure disposal','C1.2'],['Data minimization','Privacy']],
+  qs:[{q:'How long do you keep customer data?',multi:false,o:['Only while they are a customer','A fixed number of years','We keep everything']},
+      {q:'How do you delete data when it is no longer needed?',multi:false,o:['Automated deletion','Manual deletion','No process yet']}],
+  statements:function(A,has){return [
+    {h:'Retention periods',t:(has(0,'We keep everything')?'We are establishing defined retention periods; indefinite retention will be replaced with need-based limits.':'Customer data is retained '+A(0).toLowerCase()+', after which it is scheduled for deletion.')},
+    {h:'Secure disposal',t:(has(1,'Automated deletion')?'Data past its retention period is deleted automatically and securely.':has(1,'Manual deletion')?'Data past its retention period is deleted manually on a defined schedule; automation is planned.':'A secure disposal process is being implemented for data past its retention period.')},
+    {h:'Data minimization',t:'We collect only the personal data we actually need for our stated purposes.'}
+  ];}},
+ {id:'incident',name:'Incident Response Policy',icon:'siren',controlLabel:'SOC 2 · CC7 (System Operations)',
+  purpose:'This policy defines how Northwind AI detects, responds to, and recovers from security incidents, and how customers are informed. It supports SOC 2 CC7.',
+  scope:'operate or support Northwind AI production systems',
+  evidence:'the incident response plan, incident tickets, and customer-notification records.',
+  maps:[['Detection & response','CC7.3 / CC7.4'],['Customer notification','CC7.4'],['Recovery','CC7.5']],
+  qs:[{q:'Who responds when something breaks?',multi:false,o:['An on-call rotation','Whoever is available','Undefined']},
+      {q:'Do you notify customers of incidents?',multi:false,o:['Yes, within a set time','Case by case','No policy yet']}],
+  statements:function(A,has){return [
+    {h:'Detection and response',t:(has(0,'An on-call rotation')?'A defined on-call rotation is responsible for responding to incidents.':has(0,'Whoever is available')?'Response is handled ad hoc today; a defined on-call rotation is being established.':'Incident response ownership is being formally assigned via an on-call rotation.')+' Systems are monitored for anomalies and vulnerabilities.'},
+    {h:'Customer notification',t:(has(1,'Yes, within a set time')?'Affected customers are notified within a defined timeframe of a confirmed incident.':has(1,'Case by case')?'Customer notification is handled case by case today; a defined timeframe is being set.':'A customer-notification standard with a defined timeframe is being established.')},
+    {h:'Recovery',t:'Backups are maintained and recovery procedures are tested so service can be restored after an incident.'}
+  ];}},
+ {id:'aiuse',name:'Acceptable AI Use Policy',icon:'bot',controlLabel:'NIST AI Risk Management Framework',
+  purpose:'This policy sets rules for how Northwind AI’s team uses AI tools responsibly, protecting customer data and quality. It aligns to the NIST AI Risk Management Framework.',
+  scope:'use AI tools in the course of Northwind AI work',
+  evidence:'the approved-tools list and AI-use training records.',
+  maps:[['Approved tools & data handling','NIST GOVERN'],['Human oversight','NIST MANAGE'],['Training','NIST GOVERN']],
+  qs:[{q:'Can staff put customer personal data into public AI tools?',multi:false,o:['Never','Only in approved tools','No rule yet']},
+      {q:'Is AI output reviewed by a human before customers see it?',multi:false,o:['Always','Sometimes','No']}],
+  statements:function(A,has){return [
+    {h:'Approved tools and data handling',t:(has(0,'Never')?'Customer personal data must never be entered into public AI tools.':has(0,'Only in approved tools')?'Customer personal data may only be used in approved, contracted AI tools — never public ones.':'A rule restricting customer data in public AI tools is being put in place; until then, staff must not enter personal data into public tools.')},
+    {h:'Human oversight',t:(has(1,'Always')?'AI-generated output is always reviewed by a person before it reaches customers.':has(1,'Sometimes')?'AI output is sometimes reviewed today; mandatory human review before customer-facing use is being adopted.':'Mandatory human review of AI output before customer-facing use is being established.')},
+    {h:'Training',t:'Staff receive training on responsible, safe AI use at least annually.'}
+  ];}},
+ {id:'change',name:'Change Management Policy',icon:'wrench',controlLabel:'SOC 2 · CC8 (Change Management)',
+  purpose:'This policy defines how changes to Northwind AI’s systems are approved, tested, and released, so changes don’t introduce security gaps. It supports SOC 2 CC8.',
+  scope:'make changes to Northwind AI production systems or code',
+  evidence:'change tickets / pull-request approvals and test records.',
+  maps:[['Change approval','CC8.1'],['Testing','CC8.1'],['Environment separation','CC8.1']],
+  qs:[{q:'How are code changes approved?',multi:false,o:['Pull-request review','Straight to production','No formal process']},
+      {q:'Do you test changes before release?',multi:false,o:['Automated tests + staging','Manual testing','Not consistently']}],
+  statements:function(A,has){return [
+    {h:'Change approval',t:(has(0,'Pull-request review')?'All changes require pull-request review and approval before release.':has(0,'Straight to production')?'Changes currently go straight to production; a required review-and-approval step is being introduced.':'A formal change-approval process (review before release) is being established.')},
+    {h:'Testing',t:(has(1,'Automated tests + staging')?'Changes are validated by automated tests and in a staging environment before release.':has(1,'Manual testing')?'Changes are manually tested before release; automated testing and staging are being added.':'A consistent pre-release testing process is being put in place.')},
+    {h:'Environment separation',t:'Development and production environments are kept separate, and changes are documented.'}
+  ];}}
 ];
 let cpStep=1,cpPolicy=null,cpAnswers=[];
 function startCreatePolicy(){ cpStep=1; cpPolicy=null; cpAnswers=[]; nav('createpolicy'); renderCP(); }
 function cpPick(id){ cpPolicy=id; cpAnswers=[]; cpStep=2; renderCP(); }
-function cpAns(qi,oi){ cpAnswers[qi]=oi; renderCP(); }
-function cpGo3(){ const p=CPOLICIES.find(x=>x.id===cpPolicy); if(p.qs.every((q,qi)=>cpAnswers[qi]!=null)){ cpStep=3; renderCP(); } }
-function cpApprove(){ toast('Policy approved & saved to your library ✓'); nav('docs'); }
-function cpGenerate(){
+function cpAns(qi,oi){
   const p=CPOLICIES.find(x=>x.id===cpPolicy);
-  let b=p.name.toUpperCase()+' — Northwind AI\n\nAligned to: '+p.ctrl+'\n\n';
-  b+='HOW WE WORK (from your answers):\n';
-  p.qs.forEach((q,i)=>{ const a=cpAnswers[i]!=null?q.o[cpAnswers[i]]:'(not answered)'; b+='  • '+q.q.replace(/\?$/,'')+': '+a+'\n'; });
-  b+='\nWHAT WE COMMIT TO:\n';
-  p.qs.forEach((q,i)=>{ const weak=cpAnswers[i]===q.o.length-1;
-    b+='  '+(weak?'→ We are putting in place proper practice for ':'✓ We maintain our practice for ')+q.q.replace(/\?$/,'').toLowerCase()+'.\n'; });
-  b+='\nThis policy satisfies '+p.ctrl+'. Owner: Head of Operations. Review: every 6 months.\n\n[Draft written from your answers and aligned to the control — review and approve.]';
-  return b;
+  if(!cpAnswers[qi]) cpAnswers[qi]=[];
+  const arr=cpAnswers[qi], pos=arr.indexOf(oi);
+  if(p.qs[qi].multi){ if(pos>-1) arr.splice(pos,1); else arr.push(oi); }
+  else { cpAnswers[qi]=[oi]; }
+  renderCP();
+}
+function cpDone(p){ return p.qs.every((q,qi)=>cpAnswers[qi]&&cpAnswers[qi].length); }
+function cpGo3(){ const p=CPOLICIES.find(x=>x.id===cpPolicy); if(cpDone(p)){ cpStep=3; renderCP(); } }
+function cpApprove(){ toast('Policy approved & saved to your library ✓'); nav('docs'); }
+function cpAnsText(p,qi){ return (cpAnswers[qi]||[]).map(i=>p.qs[qi].o[i]).join(', ')||'(not answered)'; }
+function cpWeak(p){ const w=[]; p.qs.forEach((q,qi)=>{ if((cpAnswers[qi]||[]).indexOf(q.o.length-1)>-1) w.push(q); }); return w; }
+function generatePolicyText(){
+  const p=CPOLICIES.find(x=>x.id===cpPolicy);
+  const A=(qi)=>cpAnsText(p,qi);
+  const has=(qi,t)=>(cpAnswers[qi]||[]).some(i=>p.qs[qi].o[i]===t);
+  const s=[];
+  s.push(p.name.toUpperCase()+' — Northwind AI, Inc.');
+  s.push('Aligned to: '+p.controlLabel);
+  s.push('Version 1.0   ·   Effective: upon approval   ·   Owner: Head of Operations   ·   Review: every 6 months');
+  s.push('');
+  s.push('1. PURPOSE'); s.push(p.purpose); s.push('');
+  s.push('2. SCOPE'); s.push('This policy applies to all employees, contractors, and third parties who '+p.scope+'.'); s.push('');
+  s.push('3. POLICY');
+  p.statements(A,has).forEach((st,i)=>{ s.push('   3.'+(i+1)+'  '+st.h); s.push('   '+st.t); s.push(''); });
+  s.push('4. ROLES & RESPONSIBILITIES');
+  s.push('The Head of Operations owns this policy. System and process owners implement it for their areas. Managers approve requests and initiate changes for their teams. All staff are responsible for following it.'); s.push('');
+  s.push('5. ENFORCEMENT');
+  s.push('Violations may result in removal of access and disciplinary action up to and including termination. Suspected issues must be reported to the Head of Operations immediately.'); s.push('');
+  s.push('6. EVIDENCE MAINTAINED FOR AUDIT');
+  s.push('To demonstrate this policy is followed, we retain: '+p.evidence); s.push('');
+  s.push('7. REVIEW');
+  s.push('This policy is reviewed at least every six months, and whenever systems or obligations materially change.');
+  return s.join('\n');
+}
+function cpTrust(p){
+  const weak=cpWeak(p);
+  let h='<div class="trust"><div class="th">'+icon('shield',18)+'How I made this — in plain words</div><div class="tb">';
+  h+='<div class="tlbl">'+icon('listChecks',15)+'Here is what I did</div>';
+  ['I read the official rules for '+p.controlLabel+'.','I looked at your answers about how you actually work.','I wrote a full policy that matches both, in clear numbered sections.'].forEach((t,i)=>{ h+='<div class="tstep"><span class="tn">'+(i+1)+'</span><span>'+t+'</span></div>'; });
+  h+='<div class="tlbl">'+icon('landmark',15)+'Where I got it (trusted sources)</div>';
+  h+='<span class="srcbadge official">'+icon('landmark',15)+'Official rule: '+p.controlLabel+'</span>';
+  h+='<span class="srcbadge your">'+icon('checkCircle',15)+'Your own answers</span>';
+  h+='<div class="tlbl">'+icon('checkCircle',15)+'How sure I am</div>';
+  if(!weak.length){ h+='<div class="conf solid">'+icon('checkCircle',16)+'Solid — this matches clear requirements and what you told me.</div>'; }
+  else { h+='<div class="conf check">'+icon('alert',16)+'Double-check a few things — some of your answers show gaps.</div>';
+    h+='<p class="muted" style="font-size:13px;margin-top:8px">I wrote those parts as “we are putting this in place” and flagged them so you can fix them: '+weak.map(q=>q.q.replace(/\?.*/,'')).join('; ')+'.</p>'; }
+  h+='<details class="showwork"><summary>'+icon('fileText',15)+'Show your work — which part matches which rule</summary><div style="margin-top:10px">';
+  p.maps.forEach(m=>{ h+='<div class="maprow"><span>'+m[0]+'</span><span class="mc">'+m[1]+'</span></div>'; });
+  h+='</div></details>';
+  h+='<p class="muted" style="font-size:12.5px;margin-top:12px">The AI wrote this draft and showed its sources. A person still reviews and approves before it is used — and anything unsure is flagged, never guessed.</p>';
+  h+='</div></div>';
+  return h;
 }
 function renderCP(){
   const el=document.getElementById('cpBody');
   if(cpStep===1){
     el.innerHTML='<div class="cp-sec">Step 1 of 3 · What do you want to create?</div><div class="fwgrid">'+
-      CPOLICIES.map(p=>'<div class="fwcard" onclick="cpPick(\''+p.id+'\')"><span class="chk" style="background:var(--brand-soft);border:none;font-size:18px;color:inherit">'+p.icon+'</span><div><h4>'+p.name+'</h4><p>Aligns to '+p.ctrl+'</p></div></div>').join('')+'</div>';
+      CPOLICIES.map(p=>'<div class="cpcard" onclick="cpPick(\''+p.id+'\')"><span class="cpi">'+icon(p.icon,22)+'</span><div><h4>'+p.name+'</h4><p>Aligns to '+p.controlLabel+'</p></div></div>').join('')+'</div>';
   } else if(cpStep===2){
     const p=CPOLICIES.find(x=>x.id===cpPolicy);
-    let h='<div class="cp-sec">Step 2 of 3 · How do you actually work?</div><p class="muted" style="margin-bottom:16px">Your answers shape the policy — it describes how <b>you</b> operate, aligned to '+p.ctrl+'.</p>';
-    p.qs.forEach((q,qi)=>{ h+='<div class="panelcard"><div style="font-weight:600;margin-bottom:10px">'+q.q+'</div><div class="opts">';
-      q.o.forEach((opt,oi)=>{ h+='<button class="opt '+(cpAnswers[qi]===oi?'sel':'')+'" onclick="cpAns('+qi+','+oi+')"><span class="box">'+(cpAnswers[qi]===oi?'✓':'')+'</span>'+opt+'</button>'; });
+    let h='<div class="cp-sec">Step 2 of 3 · How do you actually work?</div><p class="hint2">Your answers shape the policy — it will describe how <b>you</b> operate, aligned to '+p.controlLabel+'.</p>';
+    p.qs.forEach((q,qi)=>{ h+='<div class="panelcard"><div style="font-weight:600;margin-bottom:4px">'+q.q+'</div>'+(q.multi?'<div class="hint2">Choose all that apply</div>':'<div class="hint2">Pick one</div>')+'<div>';
+      q.o.forEach((opt,oi)=>{ const sel=(cpAnswers[qi]||[]).indexOf(oi)>-1; h+='<button class="optmulti '+(sel?'sel':'')+'" onclick="cpAns('+qi+','+oi+')"><span class="bx">'+(sel?'✓':'')+'</span>'+opt+'</button>'; });
       h+='</div></div>'; });
-    const done=p.qs.every((q,qi)=>cpAnswers[qi]!=null);
-    h+='<div style="display:flex;justify-content:space-between;margin-top:8px"><button class="btn secondary sm" onclick="cpStep=1;renderCP()">← Back</button><button class="btn" '+(done?'':'disabled style="opacity:.5;cursor:not-allowed"')+' onclick="cpGo3()">Generate my policy →</button></div>';
+    const done=cpDone(p);
+    h+='<div style="display:flex;justify-content:space-between;margin-top:8px"><button class="btn secondary sm" onclick="cpStep=1;renderCP()">'+icon('arrowLeft',14)+' Back</button><button class="btn" '+(done?'':'disabled style="opacity:.5;cursor:not-allowed"')+' onclick="cpGo3()">'+icon('sparkles',15)+' Generate my policy</button></div>';
     el.innerHTML=h;
   } else {
+    const p=CPOLICIES.find(x=>x.id===cpPolicy);
     el.innerHTML='<div class="cp-sec">Step 3 of 3 · Your tailored policy</div>'+
-      '<div class="confidence" style="margin-bottom:12px"><span>✨</span><span>Written from your answers and aligned to the control. Review and approve — you\'re always in control.</span></div>'+
-      '<div class="draftbox" style="max-height:340px">'+cpGenerate()+'</div>'+
-      '<div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap"><button class="btn" onclick="cpApprove()">✓ Approve &amp; save to library</button><button class="btn secondary" onclick="cpStep=2;renderCP()">← Edit answers</button><button class="btn secondary" onclick="startCreatePolicy()">↺ Start over</button></div>';
+      '<div class="draftbox" style="max-height:360px">'+generatePolicyText()+'</div>'+
+      cpTrust(p)+
+      '<div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap"><button class="btn" onclick="cpApprove()">'+icon('checkCircle',16)+' Approve &amp; save to library</button><button class="btn secondary" onclick="cpStep=2;renderCP()">'+icon('edit',15)+' Edit answers</button><button class="btn secondary" onclick="startCreatePolicy()">'+icon('refresh',15)+' Start over</button></div>';
   }
 }
 

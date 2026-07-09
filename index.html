@@ -85,6 +85,22 @@
   .showwork summary::-webkit-details-marker{display:none}
   .maprow{display:flex;justify-content:space-between;font-size:13px;padding:8px 0;border-bottom:1px solid #f1f3f5}
   .maprow .mc{color:var(--muted);font-weight:600}
+  .logo{cursor:pointer}
+  .stat.clickable{cursor:pointer;transition:border-color .15s,box-shadow .15s}
+  .stat.clickable:hover{border-color:var(--brand);box-shadow:0 4px 12px rgba(31,111,235,.12)}
+  .policydoc{background:#fff;border:1px solid var(--line);border-radius:0 0 12px 12px;padding:24px 30px;max-height:430px;overflow:auto;font-size:14px;color:#1d2939;line-height:1.6}
+  .policydoc:focus{outline:2px solid var(--brand);outline-offset:-2px}
+  .policydoc h1{font-size:18px;margin-bottom:2px;letter-spacing:-.3px}
+  .policydoc .meta{font-size:12.5px;color:var(--muted);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+  .policydoc h2{font-size:14.5px;margin:16px 0 4px;color:var(--brand-dark)}
+  .policydoc h3{font-size:13.5px;margin:11px 0 2px;font-weight:700}
+  .policydoc p{margin:0 0 8px}
+  .fmtbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-bottom:none;border-radius:12px 12px 0 0;padding:8px 10px}
+  .fmtbtn{min-width:34px;height:32px;padding:0 8px;border-radius:7px;background:#f2f4f7;color:#344054;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;cursor:pointer;border:none}
+  .fmtbtn:hover{background:var(--brand-soft);color:var(--brand)}
+  .fmtbtn.on{background:var(--brand);color:#fff}
+  .fmtsep{width:1px;height:22px;background:var(--line);margin:0 4px}
+  .fmtspacer{flex:1}
   .top-right{display:flex;align-items:center;gap:14px}
   .avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#7c5cff,#1f6feb);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;cursor:pointer}
   .usermenu{position:relative}
@@ -279,7 +295,7 @@
 <body>
 
 <div class="topbar"><div class="wrap">
-  <div class="logo"><span class="mark">◆</span> Clario <span class="badge-demo">FULL LOVABLE v1</span></div>
+  <div class="logo" onclick="goHome()" title="Go to Overview"><span class="mark">◆</span> Clario <span class="badge-demo">FULL LOVABLE v1</span></div>
   <div class="topsearch hidden" id="topSearch">
     <span class="si">🔍</span>
     <input id="searchInput" placeholder="Search rules, documents, frameworks, help…" oninput="doSearch(this.value)" onfocus="doSearch(this.value)">
@@ -391,10 +407,10 @@
         <div class="welcome" id="dashSub">Northwind AI · tracking your frameworks in one place</div></div>
         <span class="pill g" style="align-self:center">Workspace ready ✓</span></div>
       <div class="stats">
-        <div class="stat"><div class="n" id="stFw">3</div><div class="l">Frameworks tracked</div></div>
-        <div class="stat red"><div class="n">3</div><div class="l">Urgent — act now</div></div>
-        <div class="stat amber"><div class="n">2</div><div class="l">Needs attention</div></div>
-        <div class="stat green"><div class="n">68%</div><div class="l">Overall ready</div></div>
+        <div class="stat clickable" onclick="nav('fw')" title="View your frameworks"><div class="n" id="stFw">3</div><div class="l">Frameworks tracked</div></div>
+        <div class="stat red clickable" onclick="nav('tasks')" title="See urgent items"><div class="n">3</div><div class="l">Urgent — act now</div></div>
+        <div class="stat amber clickable" onclick="nav('tasks')" title="See items needing attention"><div class="n">2</div><div class="l">Needs attention</div></div>
+        <div class="stat green clickable" onclick="nav('fw')" title="View readiness by framework"><div class="n">68%</div><div class="l">Overall ready</div></div>
       </div>
       <div class="sec-title">⛔ Most exposed — start here <span class="readbtn" onclick="readAloud('You have 3 urgent items. Start with the E U A I Act transparency policy, your G D P R privacy notice, and your security questionnaire.')">🔊 Read aloud</span></div>
       <div id="urgent"></div>
@@ -422,10 +438,10 @@
     <div id="v-tasks" class="hidden">
       <div class="page-h"><div><h2>Your to-do list</h2>
         <div class="welcome">The exact next steps, in priority order. Each is drafted for you — just review and approve.</div></div></div>
-      <div class="rule"><div><h4>Approve your AI Transparency Policy</h4><div class="why">Draft ready · <span class="tag">EU AI Act</span></div></div><div class="rt"><span class="pill r">Act now</span></div></div>
-      <div class="rule"><div><h4>Approve your GDPR privacy notice</h4><div class="why">Draft ready · <span class="tag">GDPR</span></div></div><div class="rt"><span class="pill r">Act now</span></div></div>
-      <div class="rule"><div><h4>Review pre-filled security questionnaire</h4><div class="why">Draft ready · <span class="tag">SOC 2</span></div></div><div class="rt"><span class="pill r">Act now</span></div></div>
-      <div class="rule" style="opacity:.6"><div><h4>Book expert check on Colorado AI Act</h4><div class="why">Gray area · flagged for human review</div></div><div class="rt"><span class="pill a">Review</span></div></div>
+      <div class="rule" onclick="openRuleByTitle('EU AI Act — transparency for AI content','urgent')"><div><h4>Approve your AI Transparency Policy</h4><div class="why">Draft ready · <span class="tag">EU AI Act</span></div></div><div class="rt"><span class="pill r">Act now</span><span class="arrow">→</span></div></div>
+      <div class="rule" onclick="openRuleByTitle('GDPR — privacy notice & data records','urgent')"><div><h4>Approve your GDPR privacy notice</h4><div class="why">Draft ready · <span class="tag">GDPR</span></div></div><div class="rt"><span class="pill r">Act now</span><span class="arrow">→</span></div></div>
+      <div class="rule" onclick="openRuleByTitle('Security questionnaire readiness','urgent')"><div><h4>Review pre-filled security questionnaire</h4><div class="why">Draft ready · <span class="tag">SOC 2</span></div></div><div class="rt"><span class="pill r">Act now</span><span class="arrow">→</span></div></div>
+      <div class="rule" onclick="openRuleByTitle('Colorado AI Act (US state law)','attention')"><div><h4>Book expert check on Colorado AI Act</h4><div class="why">Gray area · flagged for human review</div></div><div class="rt"><span class="pill a">Review</span><span class="arrow">→</span></div></div>
     </div>
 
     <!-- DOCS -->
@@ -433,10 +449,10 @@
       <div class="page-h"><div><h2>Document library</h2>
         <div class="welcome">Your organized library — every policy with full version history. Approved docs flow into your Audit Pack.</div></div>
         <button class="btn sm" onclick="startCreatePolicy()">✨ Create a policy</button></div>
-      <div class="rule"><div><h4>AI Governance Policy</h4><div class="why">Approved · <span class="tag">v3</span> · updated 3 days ago</div></div><div class="rt"><span class="pill g">Approved</span><span class="readbtn" onclick="event.stopPropagation();toast('Version history: v1 → v2 → v3 (demo)')">🕘 History</span></div></div>
-      <div class="rule"><div><h4>Data Privacy Notice (GDPR)</h4><div class="why">Approved · <span class="tag">v1</span> · updated last week</div></div><div class="rt"><span class="pill g">Approved</span><span class="readbtn" onclick="event.stopPropagation();toast('Version history: v1 (demo)')">🕘 History</span></div></div>
-      <div class="rule"><div><h4>Acceptable AI Use Policy</h4><div class="why">Draft · waiting for your review</div></div><div class="rt"><span class="pill a">Draft</span></div></div>
-      <div class="rule"><div><h4>Security Questionnaire (pre-filled)</h4><div class="why">Draft · waiting for your review</div></div><div class="rt"><span class="pill a">Draft</span></div></div>
+      <div class="rule" onclick="openDoc(0)"><div><h4>AI Governance Policy</h4><div class="why">Approved · <span class="tag">v3</span> · updated 3 days ago</div></div><div class="rt"><span class="pill g">Approved</span><span class="readbtn" onclick="event.stopPropagation();toast('Version history: v1 → v2 → v3 (demo)')">🕘 History</span></div></div>
+      <div class="rule" onclick="openDoc(1)"><div><h4>Data Privacy Notice (GDPR)</h4><div class="why">Approved · <span class="tag">v1</span> · updated last week</div></div><div class="rt"><span class="pill g">Approved</span><span class="readbtn" onclick="event.stopPropagation();toast('Version history: v1 (demo)')">🕘 History</span></div></div>
+      <div class="rule" onclick="openDoc(2)"><div><h4>Acceptable AI Use Policy</h4><div class="why">Draft · waiting for your review</div></div><div class="rt"><span class="pill a">Draft</span><span class="arrow">→</span></div></div>
+      <div class="rule" onclick="openDoc(3)"><div><h4>Security Questionnaire (pre-filled)</h4><div class="why">Draft · waiting for your review</div></div><div class="rt"><span class="pill a">Draft</span><span class="arrow">→</span></div></div>
     </div>
 
     <!-- EVIDENCE -->
@@ -789,14 +805,24 @@ function openRule(cat,i){
 function closeDrawer(){ document.getElementById('drawerBg').classList.remove('open'); document.getElementById('drawer').classList.remove('open'); stopRead(); }
 function genDraft(){
   const btn=document.getElementById('draftBtn'); btn.textContent='✨ Drafting…'; btn.disabled=true;
-  setTimeout(()=>{ document.getElementById('draftArea').innerHTML=
-    `<div class="draftbox">${curRule.draft}</div>
-     <div style="display:flex;gap:10px;margin-top:14px">
-       <button class="btn" style="flex:1" onclick="toast('Approved &amp; saved to your Audit Pack ✓')">✓ Approve</button>
-       <button class="btn secondary" style="flex:1" onclick="toast('Sent for edits')">Edit</button></div>
-     <p class="muted" style="font-size:12.5px;margin-top:10px">You're always in control — the AI drafts, you approve.</p>`;
+  setTimeout(function(){ document.getElementById('draftArea').innerHTML=
+    '<div class="draftbox" id="ruleDraft">'+curRule.draft+'</div>'+
+    '<div style="display:flex;gap:10px;margin-top:14px">'+
+      '<button class="btn" style="flex:1" onclick="approveRuleDraft()">'+icon('checkCircle',15)+' Approve</button>'+
+      '<button class="btn secondary" style="flex:1" id="ruleEditBtn" onclick="toggleRuleEdit()">'+icon('edit',15)+' Edit</button>'+
+    '</div>'+
+    '<p class="muted" style="font-size:12.5px;margin-top:10px">You are always in control — the AI drafts, you review and approve. Click Edit to change the wording, then Done.</p>';
   },900);
 }
+function toggleRuleEdit(){
+  const d=document.getElementById('ruleDraft'); if(!d)return;
+  const on=d.getAttribute('contenteditable')==='true';
+  d.setAttribute('contenteditable',on?'false':'true');
+  d.style.outline=on?'none':'2px solid var(--brand)'; d.style.outlineOffset='-2px';
+  const b=document.getElementById('ruleEditBtn'); if(b) b.innerHTML=(on?icon('edit',15)+' Edit':icon('checkCircle',15)+' Done');
+  if(!on){ d.focus(); toast('Editing on — change the text, then click Done'); } else { toast('Saved your edits ✓'); }
+}
+function approveRuleDraft(){ toast('Approved ✓ — saved to Documents & your Audit Pack'); closeDrawer(); }
 
 /* ---------- Read aloud (real Web Speech API) ---------- */
 function readAloud(text){
@@ -839,6 +865,14 @@ function renderKB(list){ document.getElementById('kbGrid').innerHTML=(list||kb).
 function filterKB(q){ q=q.toLowerCase(); renderKB(kb.filter(a=>(a.t+a.d+a.cat).toLowerCase().includes(q))); }
 function openArticle(i){ document.getElementById('mTitle').textContent=kb[i].t; document.getElementById('mBody').innerHTML=kb[i].body; document.getElementById('modalBg').classList.add('open'); }
 function closeModal(){ document.getElementById('modalBg').classList.remove('open'); }
+function goHome(){ if(document.getElementById('s-app').classList.contains('active')) nav('dash'); }
+const DOCS=[
+ {t:'AI Governance Policy',body:'<h1>AI Governance Policy</h1><div class="meta">Northwind AI · Approved · v3</div><h2>1. Purpose</h2><p>Defines how Northwind AI develops and uses AI responsibly, with transparency and human oversight. Supports SOC 2 and the EU AI Act.</p><h2>2. Transparency</h2><p>AI-generated content shown to users is labeled, and a record of AI features is kept.</p><h2>3. Oversight</h2><p>A named owner reviews AI use; high-impact AI decisions receive human review.</p>'},
+ {t:'Data Privacy Notice (GDPR)',body:'<h1>Data Privacy Notice</h1><div class="meta">Northwind AI · Approved · v1</div><h2>What we collect</h2><p>Names, emails, and product-usage data.</p><h2>Why</h2><p>To provide and improve the service; the legal basis is legitimate interest or consent.</p><h2>Your rights</h2><p>Access, correction, and deletion, via privacy@northwind.ai.</p>'},
+ {t:'Acceptable AI Use Policy',body:'<h1>Acceptable AI Use Policy</h1><div class="meta">Northwind AI · Draft · NIST AI RMF</div><h2>1. Approved tools</h2><p>Only approved tools may be used with company data.</p><h2>2. No personal data in public AI</h2><p>Customer personal data must not be entered into public AI tools.</p><h2>3. Human review</h2><p>AI output is reviewed by a person before customers see it.</p>'},
+ {t:'Security Questionnaire (pre-filled)',body:'<h1>Security Questionnaire</h1><div class="meta">Northwind AI · Pre-filled draft · SOC 2</div><h2>Encryption</h2><p>Data encrypted at rest (AES-256) and in transit (TLS 1.2+).</p><h2>Access control</h2><p>Role-based, least-privilege, with MFA.</p><h2>Incident response</h2><p>Documented and tested annually.</p>'}
+];
+function openDoc(i){ const d=DOCS[i]; document.getElementById('mTitle').textContent=d.t; document.getElementById('mBody').innerHTML='<div class="policydoc" style="border:none;padding:0;max-height:none">'+d.body+'</div><div style="display:flex;gap:10px;margin-top:18px"><button class="btn sm" onclick="toast(\'Opened in editor (demo)\')">Open in editor</button><button class="btn secondary sm" onclick="closeModal()">Close</button></div>'; document.getElementById('modalBg').classList.add('open'); }
 
 /* ---------- Settings tabs ---------- */
 function setTab(t){
@@ -1004,6 +1038,36 @@ function cpTrust(p){
   h+='</div></div>';
   return h;
 }
+let cpEditing=false;
+function fmtbarHTML(){
+  return '<button class="fmtbtn" title="Bold" onmousedown="event.preventDefault()" onclick="fmt(\'bold\')"><b>B</b></button>'+
+    '<button class="fmtbtn" title="Italic" onmousedown="event.preventDefault()" onclick="fmt(\'italic\')"><i>I</i></button>'+
+    '<button class="fmtbtn" title="Underline" onmousedown="event.preventDefault()" onclick="fmt(\'underline\')"><u>U</u></button>'+
+    '<button class="fmtbtn" title="Bullet list" onmousedown="event.preventDefault()" onclick="fmtList()">&#8226;</button>'+
+    '<span class="fmtsep"></span>'+
+    '<button class="fmtbtn" id="editBtn" title="Turn editing on or off" onclick="toggleEdit()">'+icon('edit',14)+'<span style="margin-left:5px">Edit</span></button>'+
+    '<span class="fmtspacer"></span>'+
+    '<button class="btn secondary sm" onclick="copyPolicy()">Copy</button>'+
+    '<button class="btn secondary sm" onclick="downloadPolicy()">Download .doc</button>';
+}
+function policyToHTML(text){
+  const esc=function(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');};
+  const lines=text.split('\n'); let html='';
+  lines.forEach(function(ln,i){ const t=esc(ln.trim());
+    if(i===0){ html+='<h1>'+t+'</h1>'; return; }
+    if(i===1||i===2){ html+='<div class="meta">'+t+'</div>'; return; }
+    if(!t) return;
+    if(/^\d+\.\s/.test(t)) html+='<h2>'+t+'</h2>';
+    else if(/^\d+\.\d+\s/.test(t)) html+='<h3>'+t+'</h3>';
+    else html+='<p>'+t+'</p>';
+  });
+  return html;
+}
+function fmt(cmd){ document.execCommand(cmd,false,null); }
+function fmtList(){ document.execCommand('insertUnorderedList',false,null); }
+function toggleEdit(){ cpEditing=!cpEditing; const d=document.getElementById('policyDoc'); if(!d)return; d.contentEditable=cpEditing; const b=document.getElementById('editBtn'); if(b)b.classList.toggle('on',cpEditing); if(cpEditing){ d.focus(); toast('Editing on — select text and use the toolbar'); } else { toast('Editing off'); } }
+function copyPolicy(){ const d=document.getElementById('policyDoc'); if(!d)return; if(navigator.clipboard){ navigator.clipboard.writeText(d.innerText).then(function(){toast('Copied to clipboard ✓');}).catch(function(){toast('Copy not available here');}); } else { toast('Copy not available here'); } }
+function downloadPolicy(){ const d=document.getElementById('policyDoc'); if(!d)return; const html='<html><head><meta charset="utf-8"></head><body style="font-family:Calibri,Arial,sans-serif">'+d.innerHTML+'</body></html>'; const blob=new Blob([html],{type:'application/msword'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=(cpPolicy||'policy')+'.doc'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){URL.revokeObjectURL(url);},1000); toast('Downloaded '+(cpPolicy||'policy')+'.doc'); }
 function renderCP(){
   const el=document.getElementById('cpBody');
   if(cpStep===1){
@@ -1019,9 +1083,10 @@ function renderCP(){
     h+='<div style="display:flex;justify-content:space-between;margin-top:8px"><button class="btn secondary sm" onclick="cpStep=1;renderCP()">'+icon('arrowLeft',14)+' Back</button><button class="btn" '+(done?'':'disabled style="opacity:.5;cursor:not-allowed"')+' onclick="cpGo3()">'+icon('sparkles',15)+' Generate my policy</button></div>';
     el.innerHTML=h;
   } else {
-    const p=CPOLICIES.find(x=>x.id===cpPolicy);
+    const p=CPOLICIES.find(x=>x.id===cpPolicy); cpEditing=false;
     el.innerHTML='<div class="cp-sec">Step 3 of 3 · Your tailored policy</div>'+
-      '<div class="draftbox" style="max-height:360px">'+generatePolicyText()+'</div>'+
+      '<div class="fmtbar">'+fmtbarHTML()+'</div>'+
+      '<div class="policydoc" id="policyDoc">'+policyToHTML(generatePolicyText())+'</div>'+
       cpTrust(p)+
       '<div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap"><button class="btn" onclick="cpApprove()">'+icon('checkCircle',16)+' Approve &amp; save to library</button><button class="btn secondary" onclick="cpStep=2;renderCP()">'+icon('edit',15)+' Edit answers</button><button class="btn secondary" onclick="startCreatePolicy()">'+icon('refresh',15)+' Start over</button></div>';
   }
